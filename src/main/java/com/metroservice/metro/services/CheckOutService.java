@@ -44,7 +44,7 @@ public class CheckOutService {
                 .orElseThrow(() -> new MetroException("Check-in not found", HttpStatus.NOT_FOUND));
 
         if (!checkIn.isActive()) {
-            throw new MetroException("Check-in is already completed", HttpStatus.BAD_REQUEST);
+            throw new MetroException("Check-out is already completed", HttpStatus.BAD_REQUEST);
         }
 
         Station exitStation = stationRepository.findById(checkOutDTO.getStationId())
@@ -55,10 +55,6 @@ public class CheckOutService {
 
         double fare = calculateFare(checkIn.getStation(), exitStation, checkIn.getCheckInTime(),
                 checkOutTime, durationInMinutes, checkIn.getTicketType());
-
-        // if (durationInMinutes > TIME_LIMIT_MINUTES) {
-        // publishPenaltyEvent(checkIn.getUserId(), durationInMinutes);
-        // }
 
         CheckOut checkout = new CheckOut();
         checkout.setCheckIn(checkIn);
