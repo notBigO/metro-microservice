@@ -1,7 +1,9 @@
 package com.metroservice.metro.services;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import org.hibernate.annotations.Check;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,10 @@ import lombok.extern.slf4j.Slf4j;
 public class CheckInService {
     private final CheckInRepository checkInRepository;
     private final StationRepository stationRepository;
+
+    public List<CheckIn> getAllActiveCheckIns(String userId) {
+        return checkInRepository.findByUserIdAndActiveTrue(userId);
+    }
 
     @Transactional
     public CheckIn processCheckIn(CheckInDTO checkInDTO) {
