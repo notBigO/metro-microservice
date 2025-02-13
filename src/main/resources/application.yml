@@ -3,7 +3,7 @@ spring:
     name: metro-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/metro
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -27,6 +27,13 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: metro-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        auto.offset.reset: earliest
 
 server:
   port: 8081
