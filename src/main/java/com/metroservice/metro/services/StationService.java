@@ -28,6 +28,10 @@ public class StationService {
         return dto;
     }
 
+    public Station getStationById(Long id) {
+        return stationRepository.findById(id).orElseThrow();
+    }
+
     public List<StationDTO> getAllActiveStations() {
         log.debug("Fetching all active stations");
         return stationRepository.findByActiveTrue()
