@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.metroservice.metro.dtos.CheckOutDTO;
+import com.metroservice.metro.dtos.FareProcessingEvent;
 import com.metroservice.metro.entities.CheckIn;
 import com.metroservice.metro.entities.CheckOut;
 import com.metroservice.metro.entities.Station;
@@ -29,12 +30,12 @@ public class CheckOutService {
     private final CheckOutRepository checkOutRepository;
     private final StationRepository stationRepository;
     private final RouteService routeService;
+    private final KafkaProducerService kafkaProducerService;
 
     private static final double BASE_FARE_PER_KM = 5.0;
     private static final double MINIMUM_FARE = 10.0;
     private static final int TIME_LIMIT_MINUTES = 90;
     private static final double PENALTY_RATE_PER_MINUTE = 10.0;
-    private static final double PEAK_HOUR_MULTIPLIER = 1.2;
 
     @Transactional
     public CheckOut processCheckOut(CheckOutDTO checkOutDTO) {
@@ -64,8 +65,16 @@ public class CheckOutService {
 
         checkIn.setActive(false);
         checkInRepository.save(checkIn);
+        checkOutRepository.save(checkout);
 
-        return checkOutRepository.save(checkout);
+        FareProcessingEvent event = new FareProcessingEvent(
+                checkIn.getUserId(),
+                checkIn.getTicketId(),
+                fare,
+                checkOutTime);
+        kafkaProducerService.sendFareProcessingEvent(event);
+
+        return checkout;
     }
 
     private double calculateFare(Station sourceStation, Station exitStation,

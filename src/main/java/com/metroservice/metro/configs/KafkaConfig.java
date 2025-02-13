@@ -15,4 +15,12 @@ public class KafkaConfig {
                 .replicas(1)
                 .build();
     }
+
+    @Bean
+    NewTopic fareProcessingTopic() {
+        return TopicBuilder.name("fare-processing")
+                .partitions(3)
+                .replicas(1)
+                .build();
+    }
 }
