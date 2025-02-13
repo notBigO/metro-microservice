@@ -1,11 +1,11 @@
 package com.metroservice.metro.services;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+
 import java.time.temporal.ChronoUnit;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.kafka.core.KafkaTemplate;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +31,7 @@ public class CheckOutService {
     private final StationRepository stationRepository;
     private final RouteService routeService;
     private final KafkaProducerService kafkaProducerService;
+    private final ActiveUserService activeUserService;
 
     private static final double BASE_FARE_PER_KM = 5.0;
     private static final double MINIMUM_FARE = 10.0;
@@ -66,6 +67,8 @@ public class CheckOutService {
         checkIn.setActive(false);
         checkInRepository.save(checkIn);
         checkOutRepository.save(checkout);
+
+        activeUserService.removeActiveUser(checkIn.getUserId(), checkIn.getStation().getId());
 
         FareProcessingEvent event = new FareProcessingEvent(
                 checkIn.getUserId(),

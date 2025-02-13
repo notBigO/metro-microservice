@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CheckInService {
     private final CheckInRepository checkInRepository;
     private final StationRepository stationRepository;
+    private final ActiveUserService activeUserService;
 
     public List<CheckIn> getAllActiveCheckIns(String userId) {
         return checkInRepository.findByUserIdAndActiveTrue(userId);
@@ -51,6 +52,8 @@ public class CheckInService {
         checkIn.setTicketType(checkInDTO.getTicketType());
         checkIn.setTicketId(checkInDTO.getTicketId());
         checkIn.setActive(true);
+
+        activeUserService.addActiveUser(checkInDTO.getUserId(), station.getId());
 
         log.debug("Checkin created: {}", checkIn);
         return checkInRepository.save(checkIn);
