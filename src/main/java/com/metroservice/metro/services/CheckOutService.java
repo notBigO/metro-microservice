@@ -74,7 +74,7 @@ public class CheckOutService {
                 checkIn.getUserId(),
                 checkIn.getTicketId(),
                 fare,
-                checkOutTime);
+                durationInMinutes, durationInMinutes, checkOutTime, checkOutTime);
         kafkaProducerService.sendFareProcessingEvent(event);
 
         return checkout;

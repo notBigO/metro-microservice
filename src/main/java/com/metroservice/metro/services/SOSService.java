@@ -17,7 +17,7 @@ public class SOSService {
     private final StationManagerRepository stationManagerRepository;
     private final KafkaProducerService kafkaProducerService;
 
-    public void handleSOSAlert(Station station, String userId) {
+    public void handleSOSAlert(Station station, Long userId) {
         log.info("Processing SOS alert for user: {} at station: {}", userId, station.getName());
 
         stationManagerRepository.findByStationAndActiveTrue(station)

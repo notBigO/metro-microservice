@@ -22,7 +22,7 @@ public class SOSController {
     @PostMapping("/{stationId}/{userId}")
     public ResponseEntity<Void> triggerSOS(
             @PathVariable Long stationId,
-            @PathVariable String userId) {
+            @PathVariable Long userId) {
         var station = stationService.getStationById(stationId);
         sosService.handleSOSAlert(station, userId);
         return ResponseEntity.ok().build();

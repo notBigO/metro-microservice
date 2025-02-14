@@ -24,7 +24,7 @@ public class CheckInController {
     private final CheckInService checkInService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<CheckIn>> getAllActiveCheckins(@PathVariable String userId) {
+    public ResponseEntity<List<CheckIn>> getAllActiveCheckins(@PathVariable Long userId) {
         return ResponseEntity.ok(checkInService.getAllActiveCheckIns(userId));
     }
 

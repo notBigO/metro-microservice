@@ -16,6 +16,7 @@ import com.metroservice.metro.repositories.StationRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
@@ -24,8 +25,9 @@ public class CheckInService {
     private final CheckInRepository checkInRepository;
     private final StationRepository stationRepository;
     private final ActiveUserService activeUserService;
+    private final UserServiceClient userServiceClient;
 
-    public List<CheckIn> getAllActiveCheckIns(String userId) {
+    public List<CheckIn> getAllActiveCheckIns(Long userId) {
         return checkInRepository.findByUserIdAndActiveTrue(userId);
     }
 
@@ -43,6 +45,12 @@ public class CheckInService {
                 .ifPresent(activeCheckIn -> {
                     throw new MetroException("User has an active check in already", HttpStatus.BAD_REQUEST);
                 });
+
+        if ("METRO_CARD".equals(checkInDTO.getTicketType())) {
+            userServiceClient.getMetroCard(checkInDTO.getUserId(), checkInDTO.getTicketId())
+                    .switchIfEmpty(Mono.error(new MetroException("Invalid metro card", HttpStatus.BAD_REQUEST)))
+                    .block();
+        }
 
         CheckIn checkIn = new CheckIn();
         checkIn.setUserId(checkInDTO.getUserId());

@@ -21,7 +21,7 @@ public class CheckIn {
     private Long id;
 
     @Column(nullable = false)
-    private String userId;
+    private Long userId;
 
     @ManyToOne
     @JoinColumn(name = "station_id", nullable = false)

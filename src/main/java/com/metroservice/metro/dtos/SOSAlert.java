@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SOSAlert {
-    private String userId;
+    private Long userId;
     private String stationName;
     private String managerEmail;
 }

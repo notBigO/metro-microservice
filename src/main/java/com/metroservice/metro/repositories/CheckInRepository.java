@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.metroservice.metro.entities.CheckIn;
 
 public interface CheckInRepository extends JpaRepository<CheckIn, Long> {
-    List<CheckIn> findByUserIdAndActiveTrue(String userId);
+    List<CheckIn> findByUserIdAndActiveTrue(Long userId);
 
     Optional<CheckIn> findByTicketIdAndActiveTrue(String ticketId);
 }

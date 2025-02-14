@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 public class CheckInDTO {
-    @NotBlank(message = "User ID is required")
-    private String userId;
+    @NotNull(message = "User ID is required")
+    private Long userId;
 
     @NotNull(message = "Station ID is required")
     private Long stationId;

@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.metroservice.metro.entities.CheckOut;
 
 public interface CheckOutRepository extends JpaRepository<CheckOut, Long> {
-    List<CheckOut> findByCheckIn_UserId(String userId);
+    List<CheckOut> findByCheckIn_UserId(Long userId);
 }

@@ -14,13 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 public class ActiveUserService {
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public void addActiveUser(String userId, Long stationId) {
+    public void addActiveUser(Long userId, Long stationId) {
         String redisKey = "active-users" + stationId;
         redisTemplate.opsForSet().add(redisKey, userId);
         log.info("Added user {} to active users for station {}", userId, stationId);
     }
 
-    public void removeActiveUser(String userId, Long stationId) {
+    public void removeActiveUser(Long userId, Long stationId) {
         String redisKey = "active-users" + stationId;
         redisTemplate.opsForSet().remove(redisKey, userId);
         log.info("User {} removed from active users at station {}", userId, stationId);

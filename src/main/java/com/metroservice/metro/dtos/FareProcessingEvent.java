@@ -7,11 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class FareProcessingEvent {
-    private String userId;
+    private Long userId;
     private String ticketId;
-    private double fare;
+    private Double fare;
+    private Long sourceStationId;
+    private Long destinationStationId;
+    private LocalDateTime checkInTime;
     private LocalDateTime checkOutTime;
 }
